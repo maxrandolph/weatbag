@@ -1,6 +1,7 @@
 import sys
 from . import words
 from weatbag.items import combine
+import random
 
 def get_action():
     """Prompts for an action, splits it into words, and removes any prepositions.
@@ -10,24 +11,28 @@ def get_action():
     """
     action = []
     while len(action) == 0:
-        action = input('> ').lower().split()
+        action = input('\n> ').lower().split()
         action = [w for w in action if w not in words.prepositions]
     return action
 
 move_directions = {'n','e','s','w','north','east','south','west'}
-
+mother=["You ought to be ashamed!","Such language for such a bold adventurer!","What would your mother say?"]
 def is_move(do):
-    return len(do) == 2 and (do[0] in words.move) and (do[1] in move_directions)      
+    return len(do) == 1 and (do[0] in words.move)
 
 def handle_action(tile, player, do):
     if len(do) == 1 and do[0] == 'quit':
+        print("until next time, adventurer!")
         sys.exit()
-        
-    elif len(do) == 2 and (do[0] in words.look) and (do[1] in words.surroundings):
+    if len(do) == 1 and (do[0]in words.help):
+        print("To move, use 'n,e,w,s'\nTo examine your surroundings, type:'look around'\nTo check your inventory, type:'bag' or 'i'\nOther commands will be intuitive to the situation.")        
+    if len(do) == 1 and (do[0]in words.swear):
+        print(random.choice(mother))
+    elif len(do) == 1 and (do[0] in words.look):
         # Look around
         tile.describe()
     
-    elif len(do) == 2 and (do[0] in words.look) and (do[1] in words.inventory):
+    elif len(do) == 1 and (do[0] in words.inventory):
         # Look at bag
         for item, n in player.inventory.most_common():
             if n < 1:

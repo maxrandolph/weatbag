@@ -112,7 +112,7 @@ def interact(player):
     while True:
         do = action.get_action()
         if action.is_move(do):
-            direction = do[1][0].lower()
+            direction = do[0][0].lower()
             # check if we can leave tile
             if not getattr(tile, 'leave', lambda p,d: True)(player, direction):
                 continue
